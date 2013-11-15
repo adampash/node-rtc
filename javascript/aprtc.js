@@ -31,7 +31,7 @@ var createSignalingChannel = function (endpoint) {
 
     return ws;
   } else {
-    var ws = io.connect('http://localhost');
+    var ws = io.connect('/');
     ws.addEventListener = ws.on;
     return ws;
   }
