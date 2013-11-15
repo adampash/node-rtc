@@ -6,6 +6,14 @@ startCallButton.disabled = false;
 
 var chatTextInput = document.getElementById('chatTextInput');
 chatTextInput.disabled = true;
+var chatForm = document.getElementById('chatForm');
+chatForm.onsubmit = function() {
+  var message = chatTextInput.value;
+  chatTextInput.value = '';
+  createMessage(message);
+  dataChannel.send(message);
+  return false;
+}
 
 var chatTextResponses = document.getElementById('chatTextResponses');
 
@@ -116,6 +124,7 @@ function handleSendChannelStateChange() {
   trace('Send channel state is: ' + readyState);
   if (readyState == "open") {
     console.log('ready to send data!');
+    chatTextInput.disabled = false;
   } else {
     dataChannelSend.disabled = true;
     sendButton.disabled = true;
@@ -125,6 +134,14 @@ function handleSendChannelStateChange() {
 
 function handleMessage(event) {
   trace('Received message: ' + event.data);
+  createMessage(event.data);
+}
+
+function createMessage(message) {
+  var responseField = document.getElementById('chatTextResponses');
+  var response = document.createElement('li');
+  response.innerHTML = message;
+  responseField.appendChild(response);
 }
 
 function gotReceiveChannel(event) {
